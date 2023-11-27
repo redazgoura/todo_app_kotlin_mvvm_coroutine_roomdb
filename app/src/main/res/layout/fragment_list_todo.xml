@@ -4,7 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <variable
+            name="listTodoViewModel"
+            type="zgoura.reda.todo_app.ui.list.ListTodoViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

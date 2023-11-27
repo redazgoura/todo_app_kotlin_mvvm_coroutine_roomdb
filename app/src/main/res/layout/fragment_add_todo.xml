@@ -4,12 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="addTodoViewModel"
+            type="zgoura.reda.todo_app.ui.add.AddTodoViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="8dp"
         tools:context=".ui.add.AddTodoFragment">
 
 
@@ -17,9 +20,11 @@
             android:id="@+id/addTodo"
             android:layout_width="34dp"
             android:layout_height="46dp"
+            android:padding="8dp"
             app:chipBackgroundColor="#009688"
             app:chipIcon="@drawable/ic_add"
             app:chipIconSize="24dp"
+            android:onClick="@{()-> addTodoViewModel.onAddTodo()}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -28,7 +33,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:gravity="left|start"
-            tools:hint="bla bla"
+            android:text="@={addTodoViewModel.title}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

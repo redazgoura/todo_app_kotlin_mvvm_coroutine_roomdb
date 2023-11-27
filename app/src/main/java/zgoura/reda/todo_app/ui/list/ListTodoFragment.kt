@@ -5,56 +5,52 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import zgoura.reda.todo_app.R
+import zgoura.reda.todo_app.database.TodoDatabase
+import zgoura.reda.todo_app.databinding.FragmentAddTodoBinding
+import zgoura.reda.todo_app.databinding.FragmentListTodoBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ListTodoFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class ListTodoFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_list_todo, container, false)
+        // Get a reference to the binding object and inflate the fragment views.
+        val binding : FragmentListTodoBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_list_todo, container, false)
+
+        val application = requireNotNull(this.activity).application
+
+        val dataSource = TodoDatabase.getDatabase(application).todoDao
+
+        val viewModelFactory = ListTodoViewModelFactory(dataSource)
+
+        val listTodoViewModel = ViewModelProvider(this, viewModelFactory)[ListTodoViewModel::class.java]
+
+        binding.listTodoViewModel = listTodoViewModel
+
+        val adapter = TodoAdapter()
+
+        binding.listTodosRv.adapter = adapter
+
+        listTodoViewModel.todos.observe(viewLifecycleOwner, Observer {
+            it?.let {
+                adapter.submitList(it)
+            }
+        })
+
+        binding.floatingActionButton.setOnClickListener {
+            this.findNavController().navigate(ListTodoFragmentDirections.actionListTodoFragment2ToAddTodoFragment2())
+        }
+
+        binding.lifecycleOwner = viewLifecycleOwner
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ListTodoFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ListTodoFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
 }
