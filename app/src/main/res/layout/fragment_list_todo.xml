@@ -24,7 +24,9 @@
             app:layout_constraintTop_toTopOf="parent"
             android:clipToPadding="false"
             android:padding="4dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+            app:spanCount="3"
+            tools:listitem="@layout/recycler_view_list_item"
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/floatingActionButton"

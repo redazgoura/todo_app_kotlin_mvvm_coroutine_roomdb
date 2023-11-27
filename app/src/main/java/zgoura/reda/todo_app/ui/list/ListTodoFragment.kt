@@ -1,6 +1,7 @@
 package zgoura.reda.todo_app.ui.list
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -35,13 +36,22 @@ class ListTodoFragment : Fragment() {
 
         binding.listTodoViewModel = listTodoViewModel
 
-        val adapter = TodoAdapter()
+        val adapter = TodoAdapter{ idTodo ->
+            //Log.i("Todo ID", "${idTodo.toString()}")
+            listTodoViewModel.todoItemClicked(idTodo)
+        }
 
         binding.listTodosRv.adapter = adapter
 
         listTodoViewModel.todos.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
+            }
+        })
+
+        listTodoViewModel.navigateToTodoItem.observe(viewLifecycleOwner, Observer {
+            if(it != null){
+                this.findNavController().navigate(ListTodoFragmentDirections.actionListTodoFragment2ToUpdateTodoFragment(it))
             }
         })
 

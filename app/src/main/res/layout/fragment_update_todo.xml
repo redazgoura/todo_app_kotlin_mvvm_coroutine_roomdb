@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="updateViewModel"
+            type="zgoura.reda.todo_app.ui.update.UpdateTodoViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -29,7 +31,8 @@
                 android:layout_height="46dp"
                 app:chipBackgroundColor="#EA0808"
                 app:chipIcon="@drawable/ic_del"
-                app:chipIconSize="24dp" />
+                app:chipIconSize="24dp"
+                android:onClick="@{()->updateViewModel.onDeleteTodo()}"/>
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/updateTodo"
@@ -40,7 +43,8 @@
                 android:textColor="#009688"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:chipBackgroundColor="@color/white" />
+                app:chipBackgroundColor="@color/white"
+                android:onClick="@{()->updateViewModel.onUpdateTodo()}"/>
 
         </com.google.android.material.chip.ChipGroup>
         <EditText
@@ -48,7 +52,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            tools:text="bla bla "
+            android:text="@={updateViewModel.todoById.titleTodo}"
             android:gravity="top|start"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

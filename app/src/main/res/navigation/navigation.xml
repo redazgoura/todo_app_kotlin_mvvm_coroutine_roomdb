@@ -35,5 +35,8 @@
             android:id="@+id/action_updateTodoFragment_to_listTodoFragment2"
             app:destination="@id/listTodoFragment2"
             app:popUpTo="@id/listTodoFragment2" />
+        <argument
+            android:name="idTodo"
+            app:argType="long" />
     </fragment>
 </navigation>

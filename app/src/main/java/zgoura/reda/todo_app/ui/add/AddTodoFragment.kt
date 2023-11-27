@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
 import zgoura.reda.todo_app.R
 import zgoura.reda.todo_app.database.TodoDao
 import zgoura.reda.todo_app.database.TodoDatabase
@@ -20,6 +21,7 @@ class AddTodoFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         // Get a reference to the binding object and inflate the fragment views.
         val binding : FragmentAddTodoBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_add_todo, container, false)
 
@@ -38,6 +40,26 @@ class AddTodoFragment : Fragment() {
         addTodoViewModel.navigateToTodoList.observe(viewLifecycleOwner, Observer {
             if (it==true){
                 this.findNavController().navigate(AddTodoFragmentDirections.actionAddTodoFragment2ToListTodoFragment2())
+            }
+        })
+
+        addTodoViewModel.showSnackBarEvent.observe(viewLifecycleOwner, Observer {
+
+            if (it == false){
+
+                Snackbar.make(
+                    requireActivity().findViewById(android.R.id.content),
+                    "The Filed Is Empty ",
+                    Snackbar.LENGTH_LONG
+                ).show()
+
+            }else{
+
+                Snackbar.make(
+                    requireActivity().findViewById(android.R.id.content),
+                    "New Todo Added",
+                    Snackbar.LENGTH_LONG
+                ).show()
             }
         })
 

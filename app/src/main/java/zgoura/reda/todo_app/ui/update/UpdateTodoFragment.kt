@@ -5,56 +5,71 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.DiffUtil
+import com.google.android.material.snackbar.Snackbar
 import zgoura.reda.todo_app.R
+import zgoura.reda.todo_app.database.TodoDatabase
+import zgoura.reda.todo_app.databinding.FragmentAddTodoBinding
+import zgoura.reda.todo_app.databinding.FragmentUpdateTodoBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [UpdateTodoFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class UpdateTodoFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_update_todo, container, false)
+
+        // Get a reference to the binding object and inflate the fragment views.
+        val binding : FragmentUpdateTodoBinding = DataBindingUtil.inflate(inflater, R.layout.fragment_update_todo, container, false)
+
+        // get todo ID using safeArgs
+        val idTodo = UpdateTodoFragmentArgs.fromBundle(requireArguments()).idTodo
+
+        val application = requireNotNull(this.activity).application
+
+        val datasource = TodoDatabase.getDatabase(application).todoDao
+
+        val viewModelFactory = UpdateTodoViewModelFactory(idTodo, datasource)
+
+        val updateViewModel = ViewModelProvider(this, viewModelFactory)[UpdateTodoViewModel::class.java]
+
+        binding.updateViewModel = updateViewModel
+        binding.lifecycleOwner = viewLifecycleOwner
+
+
+        updateViewModel.navigateToListTodo.observe(viewLifecycleOwner, Observer {
+            if(it == true){
+                this.findNavController().navigate(UpdateTodoFragmentDirections.actionUpdateTodoFragmentToListTodoFragment2())
+                updateViewModel.onNavigateToListTodo()
+            }
+        })
+
+        updateViewModel.showSnackBarEvent.observe(viewLifecycleOwner, Observer {
+
+            if (it == false){
+
+                Snackbar.make(
+                    requireActivity().findViewById(android.R.id.content),
+                    "The Filed Is Empty ",
+                    Snackbar.LENGTH_LONG
+                ).show()
+
+            }else{
+
+                Snackbar.make(
+                    requireActivity().findViewById(android.R.id.content),
+                    "Todo Is Updated",
+                    Snackbar.LENGTH_LONG
+                ).show()
+            }
+        })
+
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment UpdateTodoFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            UpdateTodoFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
-    }
 }
