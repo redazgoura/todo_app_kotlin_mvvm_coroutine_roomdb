@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.add.AddTodoFragment">
+
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/addTodo"
+            android:layout_width="34dp"
+            android:layout_height="46dp"
+            app:chipBackgroundColor="#009688"
+            app:chipIcon="@drawable/ic_add"
+            app:chipIconSize="24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/titleTodo"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:gravity="left|start"
+            tools:hint="bla bla"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addTodo" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

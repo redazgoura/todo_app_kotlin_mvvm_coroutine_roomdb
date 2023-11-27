@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/listTodoFragment2">
+    <fragment
+        android:id="@+id/listTodoFragment2"
+        android:name="zgoura.reda.todo_app.ui.list.ListTodoFragment"
+        android:label="ListTodoFragment"
+        tools:layout="@layout/fragment_list_todo">
+        <action
+            android:id="@+id/action_listTodoFragment2_to_addTodoFragment2"
+            app:destination="@id/addTodoFragment2" />
+        <action
+            android:id="@+id/action_listTodoFragment2_to_updateTodoFragment"
+            app:destination="@id/updateTodoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addTodoFragment2"
+        android:name="zgoura.reda.todo_app.ui.add.AddTodoFragment"
+        android:label="AddTodoFragment"
+        tools:layout="@layout/fragment_add_todo">
+        <action
+            android:id="@+id/action_addTodoFragment2_to_listTodoFragment2"
+            app:destination="@id/listTodoFragment2"
+            app:popUpTo="@id/listTodoFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/updateTodoFragment"
+        android:name="zgoura.reda.todo_app.ui.update.UpdateTodoFragment"
+        android:label="UpdateTodoFragment"
+        tools:layout="@layout/fragment_update_todo">
+        <action
+            android:id="@+id/action_updateTodoFragment_to_listTodoFragment2"
+            app:destination="@id/listTodoFragment2"
+            app:popUpTo="@id/listTodoFragment2" />
+    </fragment>
+</navigation>
